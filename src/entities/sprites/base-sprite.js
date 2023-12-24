@@ -1,4 +1,4 @@
-import { GRAVITY } from '../contants.js'
+import { GRAVITY } from '../../contants.js'
 export class Sprite {
   #x = 0
   #y = 0
@@ -18,7 +18,7 @@ export class Sprite {
   /**
    * @type {CanvasRenderingContext2D} ctx
    */
-  #ctx = null
+  _ctx = null
 
   constructor({ position, velocity, dimensions, ctx, gravity = GRAVITY }) {
     this.#x = position?.x || 0
@@ -32,7 +32,7 @@ export class Sprite {
 
     this.#gravity = gravity
 
-    this.#ctx = ctx
+    this._ctx = ctx
   }
 
   get x() {
@@ -51,9 +51,9 @@ export class Sprite {
     return this.#height
   }
 
-  #draw() {
-    this.#ctx.fillStyle = 'white'
-    this.#ctx.fillRect(this.#x, this.#y, this.#width, this.#height)
+  _draw() {
+    this._ctx.fillStyle = 'white'
+    this._ctx.fillRect(this.#x, this.#y, this.#width, this.#height)
   }
 
   update() {
@@ -61,19 +61,20 @@ export class Sprite {
     this.#y += this.velocity.y
     this.#x += this.velocity.x
 
-    this.#draw()
+    this._draw()
+    this.velocity.x = 0
   }
 
   #applyGravity() {
     if (this.isOnGround) {
-      this.#y = this.#ctx.canvas.height - this.#height
+      this.#y = this._ctx.canvas.height - this.#height
     } else {
       this.velocity.y += this.#gravity
     }
   }
 
   get isOnGround() {
-    return Math.ceil(this.spriteHeight) >= this.#ctx.canvas.height
+    return Math.ceil(this.spriteHeight) >= this._ctx.canvas.height
   }
 
   get spriteHeight() {

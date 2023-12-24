@@ -1,5 +1,5 @@
 import createControlsState from './controls.js'
-import { Figther } from './sprites/fighter.js'
+import { Figther } from './entities/sprites/fighter.js'
 
 let prevTime = 0
 

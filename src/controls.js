@@ -1,4 +1,4 @@
-import { Figther } from './sprites/fighter.js'
+import { Figther } from './entities/sprites/fighter.js'
 
 /**
  * @param {Figther} player
@@ -34,10 +34,8 @@ export default function createControlsState(player) {
 
   window.addEventListener('keydown', e => {
     const key = Object.values(keys).find(key => key.keys.includes(e.key))
-
     if (key) {
       key.isPressed = true
-      key.isHolding = true
     }
   })
 
@@ -51,7 +49,6 @@ export default function createControlsState(player) {
   })
 
   return function handleControls() {
-    player.velocity.x = 0
     if (keys.moveLeft.isPressed) {
       player.moveLeft()
     }
@@ -60,8 +57,14 @@ export default function createControlsState(player) {
       player.moveRight()
     }
 
-    if (keys.up.isPressed) {
+    if (keys.up.isPressed && !keys.up.isHolding) {
       player.jump()
+      keys.up.isHolding = true
+    }
+
+    if (keys.attack.isPressed && !keys.attack.isHolding) {
+      player.attack()
+      keys.attack.isHolding = true
     }
   }
 }
